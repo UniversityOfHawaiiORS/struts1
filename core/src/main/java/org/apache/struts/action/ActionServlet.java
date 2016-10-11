@@ -71,6 +71,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.MissingResourceException;
@@ -1702,8 +1703,13 @@ public class ActionServlet extends HttpServlet {
         // * this will suppress properties that attempt to access the "class" property of java objects in order to avoid
         // * providing unauthorized access to the classloader
 
-        PropertyUtils.addBeanIntrospector(SuppressPropertiesBeanIntrospector.SUPPRESS_CLASS);
-        PropertyUtils.clearDescriptors();
+        HashSet suppressProperties = new HashSet();
+        suppressProperties.add("class");
+        suppressProperties.add("multipartRequestHandler");
+        suppressProperties.add("resultValueMap");
+
+        PropertyUtils.addBeanIntrospector(
+                new SuppressPropertiesBeanIntrospector(suppressProperties));
 
         // * END patch
         // **********
