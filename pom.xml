@@ -37,10 +37,21 @@
 
     <inceptionYear>2000</inceptionYear>
 
+    <properties>
+        <dm.snapshotRepository.id>kualico.nexus.core.releases</dm.snapshotRepository.id>
+        <dm.snapshotRepository.name>KualiCo Nexus Core Snapshots Repository</dm.snapshotRepository.name>
+        <dm.snapshotRepository.url>https://nexus.kuali.co/nexus/content/repositories/core-snapshots-public</dm.snapshotRepository.url>
+
+        <dm.repository.id>kualico.nexus.core.releases</dm.repository.id>
+        <dm.repository.name>KualiCo Nexus Core Releases Repository</dm.repository.name>
+        <dm.repository.url>https://nexus.kuali.co/nexus/content/repositories/core-releases-public</dm.repository.url>
+    </properties>
+
     <scm>
-       <connection>scm:svn:http://svn.apache.org/repos/asf/struts/struts1/branches/STRUTS_1_3_BRANCH</connection>
-       <developerConnection>scm:svn:https://svn.apache.org/repos/asf/struts/struts1/branches/STRUTS_1_3_BRANCH</developerConnection>
-       <url>http://svn.apache.org/viewcvs.cgi/struts/struts1/struts1/branches/STRUTS_1_3_BRANCH</url>
+        <connection>scm:git:https://github.com/kuali/struts1.git</connection>
+        <url>scm:git:https://github.com/kuali/struts1</url>
+        <developerConnection>scm:git:git@github.com:kuali/struts1.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
@@ -49,13 +60,6 @@
     </issueManagement>
 
     <ciManagement/>
-
-    <distributionManagement>
-        <site>
-            <id>apache-site</id>
-            <url>scp://people.apache.org/www/struts.apache.org/1.x/</url>
-        </site>
-    </distributionManagement>
 
     <profiles>
         <profile>
@@ -285,12 +289,65 @@
 
     <repositories>
         <repository>
-            <id>apache.snapshots</id>
-            <name>Apache Maven Repository (Snapshots and Test Builds)</name>
-            <url>http://people.apache.org/maven-snapshot-repository</url>
-            <releases><enabled>false</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
+            <id>kualico.nexus</id>
+            <name>KualiCo Nexus Group</name>
+            <url>https://nexus.kuali.co/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>${dm.snapshotRepository.id}</id>
+            <name>${dm.snapshotRepository.name}</name>
+            <url>${dm.snapshotRepository.url}</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>${dm.repository.id}</id>
+            <name>${dm.repository.name}</name>
+            <url>${dm.repository.url}</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>kualico.nexus</id>
+            <name>KualiCo Nexus Group</name>
+            <url>https://nexus.kuali.co/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>${dm.snapshotRepository.id}</id>
+            <name>${dm.snapshotRepository.name}</name>
+            <url>${dm.snapshotRepository.url}</url>
+        </snapshotRepository>
+        <repository>
+            <id>${dm.repository.id}</id>
+            <name>${dm.repository.name}</name>
+            <url>${dm.repository.url}</url>
+        </repository>
+    </distributionManagement>
 
 </project>
