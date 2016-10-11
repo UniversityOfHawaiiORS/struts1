@@ -23,6 +23,7 @@ package org.apache.struts.action;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.beanutils.SuppressPropertiesBeanIntrospector;
 import org.apache.commons.beanutils.converters.BigDecimalConverter;
 import org.apache.commons.beanutils.converters.BigIntegerConverter;
 import org.apache.commons.beanutils.converters.BooleanConverter;
@@ -54,7 +55,6 @@ import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.MessageResourcesFactory;
 import org.apache.struts.util.ModuleUtils;
 import org.apache.struts.util.RequestUtils;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.servlet.ServletContext;
@@ -63,17 +63,12 @@ import javax.servlet.UnavailableException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
-
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -1700,6 +1695,19 @@ public class ActionServlet extends HttpServlet {
      */
     protected void initOther()
         throws ServletException {
+
+        // **********
+        // * BEGIN patch for CVE-2014-0114
+        // *
+        // * this will suppress properties that attempt to access the "class" property of java objects in order to avoid
+        // * providing unauthorized access to the classloader
+
+        PropertyUtils.addBeanIntrospector(SuppressPropertiesBeanIntrospector.SUPPRESS_CLASS);
+        PropertyUtils.clearDescriptors();
+
+        // * END patch
+        // **********
+
         String value;
 
         value = getServletConfig().getInitParameter("config");
